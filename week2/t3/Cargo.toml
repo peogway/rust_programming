@@ -1,11 +1,6 @@
 [package]
-name = "t1"
+name = "t3"
 version = "0.1.0"
 edition = "2021"
-
-[[bin]]
-name = "app"
-path = "main.rs"
-
 
 [dependencies]

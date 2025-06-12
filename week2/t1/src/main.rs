@@ -1,10 +1,18 @@
 use std::io;
 
 
+fn create_default() -> String {
+    "I want to be changed.".to_string()
+}    
+fn remove_latest_word(s: &mut String) {
+    while s.len() > 0 && !s.ends_with(' ') {
+        s.pop();
+    }
+    if s.len() > 0 {
+        s.pop();
+    }
+}
 fn main() {
-    fn create_default() -> String {
-        "I want to be changed.".to_string()
-    }    
     let mut s = create_default();
     loop {
         let mut input  = String::new();
@@ -24,15 +32,10 @@ fn main() {
                 s = create_default();
             },
             2 => {
-                while s.len() > 0 && !s.ends_with(' ') {
-                    s.pop();
-                }
-                if s.len() > 0 {
-                    s.pop();
-                }
+                remove_latest_word(&mut s);
             },
             3 => {
-                println!("The new word:");
+                println!("The new word: ");
                 let mut word = String::new();
                 io::stdin().read_line(&mut word).expect("Failed to read line");
                 let word = word.trim();
