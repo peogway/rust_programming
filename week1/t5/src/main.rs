@@ -1,23 +1,25 @@
 use std::io;
 use rand::Rng;
 
+fn receive_player_attack_dmg() -> f32 {
+    let mut rng = rand::thread_rng();
+    rng.gen_range(12.5..=20.0)
+}
+
+fn receive_defense_multiplier() -> f32 {
+    let mut rng = rand::thread_rng();
+    1.0/rng.gen_range(2.0..=4.0)
+}
+
+fn receive_boss_attack_dmg() -> f32 {
+    let mut rng = rand::thread_rng();
+    rng.gen_range(5.0..=25.0)
+}
+
 fn main() {
-    fn recieve_player_attack_dmg() -> f32 {
-        let mut rng = rand::thread_rng();
-        rng.gen_range(12.5..=20.0)
-    }
 
-    fn recieve_defense_multiplier() -> f32 {
-        let mut rng = rand::thread_rng();
-        1.0/rng.gen_range(2.0..=4.0)
-    }
-
-    fn recieve_boss_attack_dmg() -> f32 {
-        let mut rng = rand::thread_rng();
-        rng.gen_range(5.0..=25.0)
-    }
     
-    let mut your_hp = 100.0;
+    let mut your_hp : f32 = 100.0;
     let mut boss_hp = 150.0;
     let mut potions = 3;
     loop {
@@ -43,15 +45,15 @@ fn main() {
             }
         };
         let mut defense_multiplier: f32 = 1.0;
-        let boss_attack_dmg = recieve_boss_attack_dmg();
+        let boss_attack_dmg = receive_boss_attack_dmg();
         match choice {
             1 => {
-                let attack_dmg = recieve_player_attack_dmg();
+                let attack_dmg = receive_player_attack_dmg();
                 boss_hp -= attack_dmg as f32;
                 println!("Your attack deals {} amount of damage.", attack_dmg);
             },
             2 => {
-                defense_multiplier = recieve_defense_multiplier();
+                defense_multiplier = receive_defense_multiplier();
                 println!("Defense activated!");
             },
             3 => {
