@@ -12,6 +12,7 @@ fn main(){
         } else {
             return "UNLUCKY".to_string();
         };
+        println!("")
     }
 
     let mut counter: i32 = 0;

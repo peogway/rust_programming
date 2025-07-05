@@ -2,36 +2,42 @@ use crate::receipt::product::{StoreProduct, create_products};
 
 
 use std::io;
+use std::fs::File;
+use std::io::Write;
+use std::collections::HashMap;
+
+
 pub struct ReceiptContent {
     pub products: Vec<StoreProduct>,
     pub store: String,
 }
 
+
 pub fn complete_purchase(rc: &mut ReceiptContent) -> Result<(), String> {
-    
-    println!("Thank you for your purchase!\n");
+    let mut file = File::create("receipt.txt").expect("Error creating the file!");
 
-    println!("{}", rc.store);
-    println!("------------------------------");
+    writeln!(file, "{}", rc.store).expect("Error writing to the file!");
+    writeln!(file, "------------------------------").expect("Error writing to the file!");
 
-    let mut counts = std::collections::HashMap::new();
+    let mut counts = HashMap::new();
     let mut total = 0;
 
     for p in &rc.products {
         *counts.entry(p.name.clone()).or_insert((0, p.price)) = (
-            counts.get(&p.name).map(|(c, _)| c + 1).unwrap_or(1),
+            counts.get(&p.name).map_or(1, |(c, _)| c + 1),
             p.price,
         );
         total += p.price;
     }
 
     for (name, (qty, price)) in counts {
-        println!("{} ({}) - {}€", name, qty, qty * price);
+        writeln!(file, "{} ({}) - {}€", name, qty, qty * price).expect("Error writing to the file!");
     }
 
-    println!("------------------------------");
-    println!("Final price: {}€", total);
-    println!("------------------------------");
+    writeln!(file, "------------------------------").expect("Error writing to the file!");
+    writeln!(file, "Final price: {}€", total).expect("Error writing to the file!");
+    writeln!(file, "------------------------------").expect("Error writing to the file!");
+
     Ok(())
 }
 
@@ -69,7 +75,8 @@ pub fn run_receipt() {
                 receipt.products.pop();
             }
             "3" => {
-                complete_purchase(&mut receipt);
+                let _ = complete_purchase(&mut receipt);
+                println!("Thank you for your purchase!\n");
                 break;
             }
             _ => println!("Invalid choice."),
