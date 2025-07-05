@@ -33,6 +33,7 @@ fn main() {
     loop {
         println!("STAGE {} - {}.\n", stage, mode_string);
         println!("{}", player.get_info());
+        // Non-boss stages
         if stage %5 != 0 {
 
             // Shopping stage
@@ -104,7 +105,7 @@ fn main() {
                     continue;
                 }
             }
-        } else {
+        } else { // Boss stage
             println!("BOSS STAGE!\n");
             let mut boss = bosses.get_random_boss();
             if diff_multi >= 0.0 {
@@ -124,7 +125,7 @@ fn main() {
             println!("Start!!!");
 
             loop {
-                // attack
+                // Attack
                 player_turn(&mut player, &mut boss, diff_multi, stage);
                 read_all_stdin_nonblocking();
 
@@ -153,6 +154,7 @@ fn main() {
                 println!("Boss turn in 3 seconds...");
                 count_down(3);
 
+                // Defend
                 boss_turn(&mut player, &mut boss, diff_multi, stage);
                 read_all_stdin_nonblocking();
 
@@ -177,7 +179,7 @@ fn main() {
             }
 
         }
-        if stage == 20 {
+        if stage == 20 { // Win the dungeon
             println!("You have successfully conquer the dungeon!!! 👑 👑 👑");
             println!("The darkness fades. Peace returns.");
             println!("You stood alone. You stood victorious.");
